@@ -7,6 +7,12 @@ const PORT = process.env.PORT || 3001;
 
 const tasksFilePath = path.join(__dirname, 'tasks.json');
 
+app.use(cors({
+    origin: 'https://tareas-manager-front.onrender.com', // URL de tu frontend
+    methods: 'GET,POST,PUT,DELETE', // Métodos HTTP permitidos
+    allowedHeaders: 'Content-Type,Authorization', // Encabezados permitidos
+}));
+
 app.use(express.json());
 app.use(cors());
 

@@ -10,7 +10,7 @@ const App = () => {
 
     const fetchTasks = useCallback(async () => {
         try {
-            const response = await axios.get('http://localhost:3001/tasks');
+            const response = await axios.get('https://tareas-manager.onrender.com/tasks');
             setTasks(response.data);
             calculateTotalTime(response.data);
         } catch (error) {
@@ -34,7 +34,7 @@ const App = () => {
 
     const handleAddTask = async () => {
         try {
-            const response = await axios.post('http://localhost:3001/tasks', {
+            const response = await axios.post('https://tareas-manager.onrender.com/tasks', {
                 ...newTask, id: Date.now().toString()
             });
             const updatedTasks = [...tasks, response.data];
@@ -48,7 +48,7 @@ const App = () => {
 
     const handleDeleteTask = async (id) => {
         try {
-            await axios.delete(`http://localhost:3001/tasks/${id}`);
+            await axios.delete(`https://tareas-manager.onrender.com/tasks/${id}`);
             const updatedTasks = tasks.filter(task => task.id !== id);
             setTasks(updatedTasks);
             calculateTotalTime(updatedTasks);
@@ -61,7 +61,7 @@ const App = () => {
         const taskToEdit = tasks.find(task => task.id === id);
         const updatedTask = { ...taskToEdit, ...editingTask };
         try {
-            await axios.put(`http://localhost:3001/tasks/${id}`, updatedTask);
+            await axios.put(`https://tareas-manager.onrender.com/${id}`, updatedTask);
             const updatedTasks = tasks.map(task => (task.id === id ? updatedTask : task));
             setTasks(updatedTasks);
             calculateTotalTime(updatedTasks);
