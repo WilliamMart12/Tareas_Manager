@@ -14,7 +14,6 @@ app.use(cors({
 }));
 
 app.use(express.json());
-app.use(cors());
 
 app.get('/tasks', (req, res) => {
     fs.readFile(tasksFilePath, 'utf8', (err, data) => {
@@ -76,13 +75,13 @@ app.put('/tasks/:id', (req, res) => {
         const tasks = JSON.parse(data);
         const taskIndex = tasks.findIndex(task => task.id === taskId);
         if (taskIndex !== -1) {
-            tasks[taskIndex] = updatedTask;
+            tasks[taskIndex] = { ...tasks[taskIndex], ...updatedTask }; // Asegura que solo se actualicen los campos necesarios
             fs.writeFile(tasksFilePath, JSON.stringify(tasks), 'utf8', (err) => {
                 if (err) {
                     console.error('Error writing tasks file:', err);
                     return res.status(500).json({ error: 'Internal Server Error' });
                 }
-                res.json(updatedTask);
+                res.json(tasks[taskIndex]);
             });
         } else {
             res.status(404).json({ error: 'Task not found' });

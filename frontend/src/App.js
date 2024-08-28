@@ -33,6 +33,11 @@ const App = () => {
     };
 
     const handleAddTask = async () => {
+        if (!newTask.title || !newTask.time) {
+            alert("Por favor, completa todos los campos.");
+            return;
+        }
+
         try {
             const response = await axios.post('https://tareas-manager.onrender.com/tasks', {
                 ...newTask, id: Date.now().toString()
@@ -58,10 +63,15 @@ const App = () => {
     };
 
     const handleEditTask = async (id) => {
+        if (!editingTask.title || !editingTask.time) {
+            alert("Por favor, completa todos los campos.");
+            return;
+        }
+
         const taskToEdit = tasks.find(task => task.id === id);
         const updatedTask = { ...taskToEdit, ...editingTask };
         try {
-            await axios.put(`https://tareas-manager.onrender.com/${id}`, updatedTask);
+            await axios.put(`https://tareas-manager.onrender.com/tasks/${id}`, updatedTask);
             const updatedTasks = tasks.map(task => (task.id === id ? updatedTask : task));
             setTasks(updatedTasks);
             calculateTotalTime(updatedTasks);
